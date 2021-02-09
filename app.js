@@ -1,13 +1,25 @@
 
-var button = document.querySelector('#app button')
+const submitButton = document.querySelector('#app form button')
+const zipCopdefield = document.querySelector('#app form input')
+const content = document.querySelector('#app main')
 
-button.addEventListener('click',() => {
-  axios.get('https://api.github.com/users')
+submitButton.addEventListener('click', run)
+
+function run(event) {
+  event.preventDefault()
+
+  let zipCode = zipCopdefield.value
+
+  zipCode = zipCode.replace(' ', '')
+  zipCode = zipCode.replace('.', '')
+  zipCode = zipCode.trim()
+
+  axios.get(`https://viacep.com.br/ws/${zipCode}/json/`)
     .then((response) => {
-      var data = response.data
-      console.log(data[0])
+      console.log(response.data)
     })
     .catch((error) => {
       console.log(error)
     })
-})
+
+}
