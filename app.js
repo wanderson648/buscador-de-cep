@@ -18,16 +18,20 @@ function run(event) {
 
   axios.get(`https://viacep.com.br/ws/${zipCode}/json/`)
     .then((response) => {
+      
+      const { erro, logradouro, uf, localidade, bairro } = response.data
+      
+      if (erro) throw new Error('CEP inválido')
+      
       content.innerHTML = ''
-      
-      const { logradouro, uf, localidade, bairro } = response.data
-      
       createLine(logradouro)
       createLine(`${localidade}/${uf}`)
       createLine(bairro)
     })
     .catch((error) => {
+      content.innerHTML = ''
       console.log(error)
+      createLine('Algo deu errado!')
     })
 
 
