@@ -14,12 +14,29 @@ function run(event) {
   zipCode = zipCode.replace('.', '')
   zipCode = zipCode.trim()
 
+  
+
   axios.get(`https://viacep.com.br/ws/${zipCode}/json/`)
     .then((response) => {
-      console.log(response.data)
+      content.innerHTML = ''
+      
+      const { logradouro, uf, localidade, bairro } = response.data
+      
+      createLine(logradouro)
+      createLine(`${localidade}/${uf}`)
+      createLine(bairro)
     })
     .catch((error) => {
       console.log(error)
     })
 
+
+}
+
+function createLine(text) {
+  let line = document.createElement('p')
+  let textLine = document.createTextNode(text)
+
+  line.appendChild(textLine)
+  content.appendChild(line)
 }
